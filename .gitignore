@@ -2,18 +2,14 @@ __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
-
 .venv/
 venv/
 env/
-
-credentials.json
-client_secret*.json
-
 *.log
-
-.vscode/
-.idea/
-
 .DS_Store
 Thumbs.db
+
+# sensitive files
+main.local.py
+credentials.json
+client_secret*.json
