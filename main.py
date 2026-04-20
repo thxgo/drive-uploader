@@ -1,6 +1,9 @@
 from google.oauth2 import service_account
 from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload
 from datetime import datetime
+import os
+import mimetypes
 
 # Google Drive authentication 
 
@@ -44,3 +47,21 @@ if not found:
         fields="id"
         ).execute()["id"]
     print(f"folder {today} created! - https://drive.google.com/drive/u/2/folders/{working_folder}")
+
+# get file path from user and upload to working folder
+
+file_path = input("file path: ") # TODO: add input validation 
+mime_type, _ = mimetypes.guess_type(file_path)
+file_name = os.path.basename(file_path) 
+media = MediaFileUpload(file_path, mimetype=mime_type)
+
+file_id = service.files().create(
+        body={
+            "name": file_name,
+            "parents": [working_folder]
+        },
+        media_body=media,
+        fields="id",
+        supportsAllDrives=True
+).execute()["id"]
+print(f"file {file_name} was sucessfuly uploaded in Google Drive! - https://drive.google.com/drive/u/2/folders/{file_id}")
