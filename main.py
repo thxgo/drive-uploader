@@ -1,9 +1,10 @@
-from google.oauth2 import service_account
-from googleapiclient.discovery import build
-from googleapiclient.http import MediaFileUpload
-from datetime import datetime
 import os
 import mimetypes
+from datetime import datetime
+from google.oauth2.credentials import Credentials
+from google_auth_oauthlib.flow import InstalledAppFlow
+from googleapiclient.discovery import build
+from googleapiclient.http import MediaFileUpload
 
 # Google Drive authentication 
 
@@ -11,10 +12,17 @@ CREDENTIALS_PATH= "credentials.json"
 OUTBOX_FOLDER_ID= "your_id_here"
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 
-creds = service_account.Credentials.from_service_account_file(
-    CREDENTIALS_PATH,
-    scopes=SCOPES
-)
+
+if os.path.exists("token.json"):
+    creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+else:     
+    flow = InstalledAppFlow.from_client_secrets_file(
+        CREDENTIALS_PATH,
+        scopes=SCOPES
+        )
+    creds = flow.run_local_server(port=0)
+    with open("token.json", "w") as token:
+        token.write(creds.to_json())       
 service = build("drive", "v3", credentials=creds)
 
 # list folders inside outbox
@@ -64,4 +72,4 @@ file_id = service.files().create(
         fields="id",
         supportsAllDrives=True
 ).execute()["id"]
-print(f"file {file_name} was sucessfuly uploaded in Google Drive! - https://drive.google.com/drive/u/2/folders/{file_id}")
+print(f"file {file_name} was sucessfuly uploaded in Google Drive! - https://drive.google.com/file/d/{file_id}/view")
