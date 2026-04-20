@@ -12,4 +12,5 @@ Thumbs.db
 # sensitive files
 main.local.py
 credentials.json
+token.json
 client_secret*.json
