@@ -9,19 +9,20 @@ from googleapiclient.http import MediaFileUpload
 # Google Drive authentication 
 
 CREDENTIALS_PATH= "credentials.json"
+TOKEN_PATH = "token.json"
 OUTBOX_FOLDER_ID= "your_id_here"
 SCOPES = ["https://www.googleapis.com/auth/drive"]
 
 
-if os.path.exists("token.json"):
-    creds = Credentials.from_authorized_user_file("token.json", SCOPES)
+if os.path.exists(TOKEN_PATH):
+    creds = Credentials.from_authorized_user_file(TOKEN_PATH, SCOPES)
 else:     
     flow = InstalledAppFlow.from_client_secrets_file(
         CREDENTIALS_PATH,
         scopes=SCOPES
         )
     creds = flow.run_local_server(port=0)
-    with open("token.json", "w") as token:
+    with open(TOKEN_PATH, "w") as token:
         token.write(creds.to_json())       
 service = build("drive", "v3", credentials=creds)
 
