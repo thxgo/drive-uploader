@@ -35,7 +35,7 @@ folders = service.files().list(
 # folder creating/checking
 
 today = datetime.now().strftime("%d-%m-%y")  
-# now = datetime.now().isoformat() # DON'T DELETE, can be used for logs later
+now = datetime.now().strftime("%H-%M")
 
 found = False
 working_folder = None
@@ -45,6 +45,7 @@ for folder in folders:
         found = True
         working_folder = folder["id"] 
         print(f"folder {today} exists! - https://drive.google.com/drive/u/2/folders/{working_folder}")
+
 if not found:
     working_folder = service.files().create(
         body={
@@ -55,8 +56,20 @@ if not found:
         fields="id"
         ).execute()["id"]
     print(f"folder {today} created! - https://drive.google.com/drive/u/2/folders/{working_folder}")
+ 
 
-# get file path from user and upload to working folder
+# create batch folder for each script run
+
+batch_id = service.files().create(
+        body={
+            "name": f"batch-{now}",
+            "mimeType": "application/vnd.google-apps.folder",
+            "parents": [working_folder]
+        },
+        fields="id"
+        ).execute()["id"]
+
+# get file path from user and upload to batch
 
 file_path = input("file path: ") # TODO: add input validation 
 mime_type, _ = mimetypes.guess_type(file_path)
@@ -66,10 +79,20 @@ media = MediaFileUpload(file_path, mimetype=mime_type)
 file_id = service.files().create(
         body={
             "name": file_name,
-            "parents": [working_folder]
+            "parents": [batch_id]
         },
         media_body=media,
         fields="id",
         supportsAllDrives=True
 ).execute()["id"]
 print(f"file {file_name} was sucessfuly uploaded in Google Drive! - https://drive.google.com/file/d/{file_id}/view")
+
+# set file visibility to public
+
+service.permissions().create(
+    fileId=file_id,
+    body={
+        "role": "reader",
+        "type": "anyone"
+    }
+).execute()
