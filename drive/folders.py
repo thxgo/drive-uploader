@@ -5,10 +5,14 @@ OUTBOX_FOLDER_ID= "your_id_here"
 # folder creating/checking
 
 def get_daily_folder(service):
-    folders = service.files().list(
-        q=f"'{OUTBOX_FOLDER_ID}' in parents",
-        fields="files(id, name)"
-    ).execute()["files"]
+    try:
+    	folders = service.files().list(
+            q=f"'{OUTBOX_FOLDER_ID}' in parents",
+            fields="files(id, name)"
+        ).execute()["files"]
+    except Exception as e:
+        print("OUTBOX_FOLDER_ID invalid. If you haven't configured it yet, see README.md")
+        return None
     today = datetime.now().strftime("%d-%m-%y")
     found = False
     working_folder = None
@@ -16,7 +20,7 @@ def get_daily_folder(service):
         if folder["name"] == today:
             found = True
             working_folder = folder["id"]
-            print(f"folder {today} exists! - https://drive.google.com/drive/u/2/folders/{working_folder}")
+            print(f"found existing folder: {today} - https://drive.google.com/drive/u/2/folders/{working_folder}")
     if not found:
         working_folder = service.files().create(
             body={
@@ -26,7 +30,7 @@ def get_daily_folder(service):
             },
             fields="id"
         ).execute()["id"]
-        print(f"folder {today} created! - https://drive.google.com/drive/u/2/folders/{working_folder}")
+        print(f"created folder: {today} - https://drive.google.com/drive/u/2/folders/{working_folder}")
     return working_folder
 
 # create batch for each script run
