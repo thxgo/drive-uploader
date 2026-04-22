@@ -1,6 +1,6 @@
 from datetime import datetime
 
-OUTBOX_FOLDER_ID= "your_id_Here"
+OUTBOX_FOLDER_ID= "your_id_here"
 
 # folder creating/checking
 

@@ -4,11 +4,11 @@ from googleapiclient.http import MediaFileUpload
 
 # get file path from user and upload to batch
 
-def upload_file(service, batch_id):
-    while True:
-        file_path = input("file path (or 'done' to finish): ") # TODO: add input validation
-        if file_path == "done":
-            break
+def upload_file(service, batch_id, files):
+    for file_path in files:
+        if not os.path.exists(file_path):
+            print(f"file not found: {file_path}")
+            continue
         mime_type, _ = mimetypes.guess_type(file_path)
         file_name = os.path.basename(file_path)
         media = MediaFileUpload(file_path, mimetype=mime_type)
@@ -20,7 +20,7 @@ def upload_file(service, batch_id):
                 media_body=media,
                 fields="id",
                 supportsAllDrives=True
-	).execute()["id"]
+    ).execute()["id"]
         print(f"file {file_name} was sucessfuly uploaded in Google Drive! - https://drive.google.com/file/d/{file_id}/view")
         # set file visibility to public
         service.permissions().create(
