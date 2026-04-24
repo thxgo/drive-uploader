@@ -2,8 +2,8 @@
 
 A CLI tool that uploads files to Google Drive, automatically organizing them by date and batch, and returns a public shareable link for each file.
 
-![terminal output](assets/screenshot.png)
-![google drive result](assets/screenshot_2.png) 
+<img src="assets/screenshot.png" width="600" alt="Terminal output"/>
+<img src="assets/screenshot_2.png" width="600" alt="Google Drive result"/>
 
 ## How it works
 
