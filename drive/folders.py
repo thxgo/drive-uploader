@@ -1,9 +1,8 @@
 from datetime import datetime
 
-OUTBOX_FOLDER_ID= "your_id_here"
+OUTBOX_FOLDER_ID= "your_folder_id_here"
 
 # folder creating/checking
-
 def get_daily_folder(service):
     try:
     	folders = service.files().list(
@@ -34,7 +33,6 @@ def get_daily_folder(service):
     return working_folder
 
 # create batch for each script run
-
 def create_batch(service, working_folder):
     now = datetime.now().strftime("%H-%M")
     batch_id = service.files().create(
