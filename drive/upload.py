@@ -5,6 +5,7 @@ from googleapiclient.http import MediaFileUpload
 # get file from user and upload to batch
 def upload_file(service, batch_id, files):
     for file_path in files:
+        mime_type, _ = mimetypes.guess_type(file_path)
         file_name = os.path.basename(file_path)
         media = MediaFileUpload(file_path, mimetype=mime_type)
         file_id = service.files().create(
