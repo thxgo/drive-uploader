@@ -8,17 +8,8 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("files", nargs="+")
     args = parser.parse_args()
-	
     service = authenticate()
     working_folder = get_daily_folder(service)
-    if working_folder is None:
-        return
-    
-    for f in args.files:
-        if not os.path.exists(f):
-            print(f"file not found: {f}")
-            return
-    
     batch_id = create_batch(service, working_folder)
     upload_file(service, batch_id, args.files)	
 

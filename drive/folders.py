@@ -1,3 +1,4 @@
+import sys
 from datetime import datetime
 
 OUTBOX_FOLDER_ID= "your_folder_id_here"
@@ -11,7 +12,7 @@ def get_daily_folder(service):
         ).execute()["files"]
     except Exception as e:
         print("OUTBOX_FOLDER_ID invalid. If you haven't configured it yet, see README.md")
-        return None
+        sys.exit(1)
     today = datetime.now().strftime("%d-%m-%y")
     found = False
     working_folder = None
