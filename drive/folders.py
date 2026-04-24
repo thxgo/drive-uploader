@@ -1,6 +1,10 @@
 import sys
 from datetime import datetime
 
+RED = "\033[91m"
+CYAN = "\033[96m"
+RESET = "\033[0m"
+
 OUTBOX_FOLDER_ID= "your_folder_id_here"
 
 # folder creating/checking
@@ -11,7 +15,7 @@ def get_daily_folder(service):
             fields="files(id, name)"
         ).execute()["files"]
     except Exception as e:
-        print("OUTBOX_FOLDER_ID invalid. If you haven't configured it yet, see README.md")
+        print(f"{RED}OUTBOX_FOLDER_ID invalid. If you haven't configured it yet, see README.md{RESET}")
         sys.exit(1)
     today = datetime.now().strftime("%d-%m-%y")
     found = False
@@ -20,7 +24,7 @@ def get_daily_folder(service):
         if folder["name"] == today:
             found = True
             working_folder = folder["id"]
-            print(f"found existing folder: {today} - https://drive.google.com/drive/u/2/folders/{working_folder}")
+            print(f"{CYAN}found existing folder: {today}{RESET}  - https://drive.google.com/drive/u/2/folders/{working_folder}")
     if not found:
         working_folder = service.files().create(
             body={
@@ -30,7 +34,7 @@ def get_daily_folder(service):
             },
             fields="id"
         ).execute()["id"]
-        print(f"created folder: {today} - https://drive.google.com/drive/u/2/folders/{working_folder}")
+        print(f"{CYAN}created folder: {today}{RESET} - https://drive.google.com/drive/u/2/folders/{working_folder}")
     return working_folder
 
 # create batch for each script run

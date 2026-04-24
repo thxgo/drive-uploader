@@ -2,6 +2,10 @@ import os
 import mimetypes
 from googleapiclient.http import MediaFileUpload
 
+RED = "\033[91m"
+GREEN = "\033[92m"
+RESET = "\033[0m"
+
 # get file from user and upload to batch
 def upload_file(service, batch_id, files):
     for file_path in files:
@@ -19,8 +23,8 @@ def upload_file(service, batch_id, files):
                 media_body=media,
                 fields="id",
                 supportsAllDrives=True
-    ).execute()["id"]
-        print(f"file {file_name} was sucessfuly uploaded to Google Drive! - https://drive.google.com/file/d/{file_id}/view")
+        ).execute()["id"]
+        print(f"{GREEN}file {file_name} was sucessfuly uploaded to Google Drive!{RESET} - https://drive.google.com/file/d/{file_id}/view")
         # set file visibility to public
         service.permissions().create(
             fileId=file_id,
