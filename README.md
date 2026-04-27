@@ -98,11 +98,8 @@ Never commit the following files (they are already in `.gitignore`):
 - `token.json` - your authenticated session token
 - `drive/folders.py` (local copy) - contains your folder ID
 
-Use `main.example.py` and the template files as reference for sharing the project without exposing sensitive data.
-
 ## Known limitations
 
-- The app must be in Google's test mode unless submitted for verification, only added test users can authenticate
 - OAuth2 tokens may expire and require re-authentication by deleting `token.json` and running the script again
 
 ## Stack
