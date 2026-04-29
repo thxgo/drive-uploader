@@ -49,12 +49,12 @@ outbox/
 Create a folder in your Google Drive where the uploads will be organized. Copy its ID from the URL:
 
 ```
-https://drive.google.com/drive/folders/THIS_IS_THE_ID
+https://drive.google.com/drive/folders/your_folder_id
 ```
 
 ### 3. Project configuration
 
-Clone the repository and set up the environment:
+- Clone the repository and set up the environment:
 
 ```bash
 git clone https://github.com/thxgo/drive-uploader
@@ -64,13 +64,13 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-Open `drive/folders.py` and set your folder ID:
+- Place your `credentials.json` in the project root.
+
+- Open `drive/folders.py` and set your Google Drive folder ID:
 
 ```python
 OUTBOX_FOLDER_ID = "your_folder_id_here"
 ```
-
-Place your `credentials.json` in the project root.
 
 ### 4. First run
 
