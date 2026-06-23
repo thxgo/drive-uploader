@@ -14,3 +14,14 @@ main.local.py
 credentials.json
 token.json
 client_secret*.json
+
+# runtime files
+*.mp4
+*.jpg
+*.png
+*.mp3
+*.m4a
+*.txt
+*.pdf
+!assets/
+!requirements.txt
